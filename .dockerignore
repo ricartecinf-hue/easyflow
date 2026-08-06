@@ -1,0 +1,10 @@
+node_modules
+.next
+.git
+app/generated
+*.tsbuildinfo
+.env
+.env.local
+.DS_Store
+docs
+__tests__

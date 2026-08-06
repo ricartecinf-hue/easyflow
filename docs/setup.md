@@ -4,6 +4,11 @@ Everything you need to get OpenReply running end to end, in one place: hosting, 
 
 If you would rather have an AI assistant drive most of this, skip to [Set it up with an AI assistant](#set-it-up-with-an-ai-assistant) at the end and come back here when it asks for specifics.
 
+Self-hosting on your own Easypanel instance instead of Vercel + Railway? Use
+[easypanel.md](easypanel.md) for hosting and the datastores, then come back to
+the [Meta app](#the-meta-app) section below — that part is the same regardless
+of host.
+
 ## How it is built
 
 OpenReply is two processes and two datastores.
