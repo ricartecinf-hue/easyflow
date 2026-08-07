@@ -88,9 +88,11 @@ cd /Users/ricardopereira/Sistemas/EasyFlow
 DATABASE_URL="postgres://postgres:<password>@<public-host>:<port>/postgres" npm run db:migrate
 ```
 
-Alternatively, use Easypanel's built-in terminal/console on the web app
-service and run `npm run db:migrate` there (it already has the correct
-internal `DATABASE_URL`).
+Alternatively, use Easypanel's built-in terminal/console on the **worker**
+service (not the web service — the web image is a pruned `standalone` build
+without the Prisma CLI; the worker image has full `node_modules`, migration
+CLI included) and run `npm run db:migrate` there. It already has the correct
+internal `DATABASE_URL`.
 
 ## 5. Cron jobs
 
