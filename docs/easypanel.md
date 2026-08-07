@@ -2,8 +2,10 @@
 
 Alternative to the Vercel + Railway split in [setup.md](setup.md). Everything
 runs on your own Easypanel instance instead: one Postgres service, one Redis
-service, and two app services built from this repo (`Dockerfile` for the web
-app, `Dockerfile.worker` for the worker), plus three cron jobs.
+service, and two app services built from this repo with **Nixpacks**
+(same builder used for the other Easypanel projects here — `nixpacks.toml`
+pins Node 20), one for the web app and one for the worker, plus three cron
+jobs.
 
 The Meta app setup (Steps 4–9 in [setup.md](setup.md)) is identical regardless
 of host — do that part from there. This page only replaces the "Hosting and
@@ -25,7 +27,10 @@ project — that's fine, the web app and worker live there too.
 ## 2. Web app service
 
 **+ Service → App**, source: this GitHub repo (`ricartecinf-hue/easyflow`),
-branch `main`, build method **Dockerfile**, path `Dockerfile`.
+branch `main`, build method **Nixpacks** (Easypanel auto-detects it from
+`nixpacks.toml`). Leave the Install/Build/Start commands at their defaults —
+`nixpacks.toml` already runs `npm ci`, `npm run build` (`prisma generate` +
+`next build`), and `npm run start` (`next start`) on port `80`.
 
 Set the domain first (Easypanel gives you a free `*.easypanel.host` subdomain,
 or attach your own domain) — you need it for `NEXTAUTH_URL` below and for the
@@ -49,15 +54,26 @@ Environment variables (Service → Environment):
 | `FACEBOOK_APP_SECRET` | From the Meta app |
 | `WEBHOOK_VERIFY_TOKEN` | Any random string, reused in Meta's webhook config |
 
-Health check path: `/api/health` (port `3000`).
+Health check path: `/api/health` (port `80`).
 
-Deploy. Easypanel builds the Dockerfile and starts `node server.js`.
+Deploy.
 
 ## 3. Worker service
 
-**+ Service → App**, same repo/branch, build method **Dockerfile**, path
-`Dockerfile.worker`. No domain needed — this process only talks to Postgres
-and Redis.
+**+ Service → App**, same repo/branch, build method **Nixpacks** again — but
+this time override two fields in the service's build settings:
+
+```
+Build Command:  npm run db:generate
+Start Command:  npm run worker
+```
+
+Don't leave the build as the default `npm run build`: it runs `next build`
+needlessly (the worker never serves HTTP), and it would try `prisma migrate
+deploy` against a database that isn't reachable yet during the build step on
+some setups. The worker only needs the generated Prisma client, from
+`db:generate`. No domain needed — this process only talks to Postgres and
+Redis, no port to expose.
 
 Environment variables: the **same** `DATABASE_URL`, `REDIS_URL`,
 `ENCRYPTION_KEY`, and `NEXTAUTH_URL` as the web app (tracked links in DMs are
@@ -68,8 +84,7 @@ Instagram token — double-check it's pasted identically in both.
 Optional tuning vars (`COMMENT_POLL_INTERVAL_MS`, `COMMENT_POLL_MAX_PER_SWEEP`,
 `COMMENT_POLL_LOOKBACK_HOURS`) — defaults are fine to start, see setup.md.
 
-Deploy. This container has no HTTP port; it just needs to stay running. Check
-`node server.js`... actually check the logs for `[DM Worker] Started`.
+Deploy. Check the logs for `[DM Worker] Started`.
 
 ## 4. Run the database migration
 
@@ -88,11 +103,10 @@ cd /Users/ricardopereira/Sistemas/EasyFlow
 DATABASE_URL="postgres://postgres:<password>@<public-host>:<port>/postgres" npm run db:migrate
 ```
 
-Alternatively, use Easypanel's built-in terminal/console on the **worker**
-service (not the web service — the web image is a pruned `standalone` build
-without the Prisma CLI; the worker image has full `node_modules`, migration
-CLI included) and run `npm run db:migrate` there. It already has the correct
-internal `DATABASE_URL`.
+Alternatively, use Easypanel's built-in terminal/console on either service
+(both have the full `node_modules`, Prisma CLI included, under Nixpacks) and
+run `npm run db:migrate` there. It already has the correct internal
+`DATABASE_URL`.
 
 ## 5. Cron jobs
 
