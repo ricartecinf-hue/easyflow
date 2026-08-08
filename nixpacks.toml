@@ -8,5 +8,5 @@ cmds = ["npm ci"]
 cmds = ["npm run build"]
 
 [start]
-cmd = "npm run start"
+cmd = "if [ \"$EASYFLOW_PROCESS\" = \"worker\" ]; then exec npm run worker; else exec npm run start; fi"
 port = 80
