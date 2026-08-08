@@ -5,7 +5,7 @@ nixPkgs = ["nodejs_22"]
 cmds = ["npm ci"]
 
 [phases.build]
-cmds = ["npm run build"]
+cmds = ["if [ \"$EASYFLOW_PROCESS\" = \"worker\" ]; then npm run db:generate; else npm run build; fi"]
 
 [start]
 cmd = "if [ \"$EASYFLOW_PROCESS\" = \"worker\" ]; then exec npm run worker; else exec npm run start; fi"
