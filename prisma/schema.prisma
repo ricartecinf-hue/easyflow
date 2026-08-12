@@ -17,12 +17,15 @@ model User {
   image         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+  lastAccessAt  DateTime?
 
   accounts          Account[]
   sessions          Session[]
   ownedWorkspaces   Workspace[]       @relation("WorkspaceOwner")
   workspaceMembers  WorkspaceMember[]
   sentInvitations   WorkspaceInvitation[] @relation("WorkspaceInvitationsSent")
+
+  @@index([lastAccessAt])
 }
 
 model Account {
@@ -75,6 +78,19 @@ model Workspace {
   usagePeriodStart  DateTime @default(now())
   dmsSentThisPeriod Int      @default(0)
 
+  accessStatus       WorkspaceAccessStatus @default(BLOCKED)
+  accessMode         WorkspaceAccessMode   @default(PAID)
+  accessReason       String?
+  accessExpiresAt    DateTime?
+  gracePeriodEndsAt  DateTime?
+  lastAccessAt       DateTime?
+  accessUpdatedAt    DateTime              @default(now())
+  accessUpdatedBy    String?
+  asaasCustomerId    String?               @unique
+  asaasSubscriptionId String?
+  asaasPaymentStatus String?
+  asaasLastEventAt   DateTime?
+
   members           WorkspaceMember[]
   invitations       WorkspaceInvitation[]
   instagramAccounts InstagramAccount[]
@@ -84,8 +100,49 @@ model Workspace {
   linkClicks        LinkClick[]
   webhookEvents     WebhookEvent[]
   operationalEvents OperationalEvent[]
+  accessEvents       WorkspaceAccessEvent[]
+  asaasWebhookEvents AsaasWebhookEvent[]
 
   @@index([ownerId])
+  @@index([lastAccessAt])
+  @@index([accessStatus, accessMode])
+}
+
+model WorkspaceAccessEvent {
+  id             String             @id @default(cuid())
+  workspaceId    String
+  source         AccessChangeSource
+  previousStatus WorkspaceAccessStatus?
+  newStatus      WorkspaceAccessStatus
+  previousMode   WorkspaceAccessMode?
+  newMode        WorkspaceAccessMode
+  reason         String?
+  actorUserId    String?
+  externalEventId String?
+  createdAt      DateTime           @default(now())
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, createdAt])
+  @@index([externalEventId])
+}
+
+model AsaasWebhookEvent {
+  id          String           @id
+  eventType   String
+  workspaceId String?
+  status      AsaasEventStatus @default(PROCESSING)
+  payload     Json
+  errorMessage String?
+  processedAt DateTime?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  workspace Workspace? @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+
+  @@index([workspaceId])
+  @@index([status])
+  @@index([createdAt])
 }
 
 model WorkspaceMember {
@@ -349,6 +406,30 @@ enum WorkspaceRole {
   OWNER
   ADMIN
   MEMBER
+}
+
+enum WorkspaceAccessStatus {
+  ACTIVE
+  PAST_DUE
+  BLOCKED
+}
+
+enum WorkspaceAccessMode {
+  FREE
+  PAID
+}
+
+enum AccessChangeSource {
+  SYSTEM
+  ADMIN
+  ASAAS
+}
+
+enum AsaasEventStatus {
+  PROCESSING
+  PROCESSED
+  IGNORED
+  FAILED
 }
 
 enum WorkspaceInvitationStatus {

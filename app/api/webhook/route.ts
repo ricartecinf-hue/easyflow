@@ -10,6 +10,7 @@ import {
 } from "@/lib/meta/webhook";
 import { MESSAGE_JOB_NAME, POSTBACK_JOB_NAME } from "@/lib/queue/client";
 import { Prisma } from "@/app/generated/prisma/client";
+import { isWorkspaceOperational } from "@/lib/access-control";
 
 const OPENING_DM_READ_FALLBACK_DELAY_MS = 5 * 60 * 1000;
 
@@ -87,8 +88,10 @@ export async function POST(request: NextRequest) {
     for (const event of commentEvents) {
       const account = await prisma.instagramAccount.findUnique({
         where: { instagramId: event.instagramAccountId },
-        select: { workspaceId: true },
+        include: { workspace: true },
       });
+
+      if (!account || !isWorkspaceOperational(account.workspace)) continue;
 
       await queue.add(
         "process-comment",
@@ -106,12 +109,10 @@ export async function POST(request: NextRequest) {
         }
       );
 
-      if (account) {
-        await prisma.webhookEvent.update({
-          where: { id: webhookEvent.id },
-          data: { workspaceId: account.workspaceId },
-        });
-      }
+      await prisma.webhookEvent.update({
+        where: { id: webhookEvent.id },
+        data: { workspaceId: account.workspaceId },
+      });
     }
 
     // Button taps from opening DMs → deliver the reveal message.
@@ -120,6 +121,13 @@ export async function POST(request: NextRequest) {
     );
 
     for (const event of postbackEvents) {
+      const account = await prisma.instagramAccount.findUnique({
+        where: { instagramId: event.instagramAccountId },
+        include: { workspace: true },
+      });
+
+      if (!account || !isWorkspaceOperational(account.workspace)) continue;
+
       await queue.add(
         POSTBACK_JOB_NAME,
         {
@@ -136,6 +144,11 @@ export async function POST(request: NextRequest) {
           ).replace(/:/g, "_")}`,
         }
       );
+
+      await prisma.webhookEvent.update({
+        where: { id: webhookEvent.id },
+        data: { workspaceId: account.workspaceId },
+      });
     }
 
     // Inbound DMs → keyword-triggered autoreply.
@@ -146,8 +159,10 @@ export async function POST(request: NextRequest) {
     for (const event of messageEvents) {
       const account = await prisma.instagramAccount.findUnique({
         where: { instagramId: event.instagramAccountId },
-        select: { workspaceId: true },
+        include: { workspace: true },
       });
+
+      if (!account || !isWorkspaceOperational(account.workspace)) continue;
 
       await queue.add(
         MESSAGE_JOB_NAME,
@@ -168,12 +183,10 @@ export async function POST(request: NextRequest) {
         }
       );
 
-      if (account) {
-        await prisma.webhookEvent.update({
-          where: { id: webhookEvent.id },
-          data: { workspaceId: account.workspaceId },
-        });
-      }
+      await prisma.webhookEvent.update({
+        where: { id: webhookEvent.id },
+        data: { workspaceId: account.workspaceId },
+      });
     }
 
     // If a user reads the opening DM and never taps the button, deliver the
@@ -184,6 +197,13 @@ export async function POST(request: NextRequest) {
     );
 
     for (const event of readEvents) {
+      const account = await prisma.instagramAccount.findUnique({
+        where: { instagramId: event.instagramAccountId },
+        include: { workspace: true },
+      });
+
+      if (!account || !isWorkspaceOperational(account.workspace)) continue;
+
       const openingLogs = await prisma.dmLog.findMany({
         where: {
           commenterId: event.userId,

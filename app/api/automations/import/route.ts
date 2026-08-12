@@ -8,6 +8,7 @@ import {
   canManageWorkspace,
   getCurrentWorkspaceContext,
 } from "@/lib/workspace-access";
+import { isWorkspaceOperational } from "@/lib/access-control";
 
 const campaignSchema = z.object({
   postId: z.string().min(1),
@@ -33,6 +34,12 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { success: false, error: "Unauthorized" },
       { status: 401 }
+    );
+  }
+  if (!isWorkspaceOperational(context.workspace)) {
+    return NextResponse.json(
+      { success: false, error: "Conta desativada" },
+      { status: 403 }
     );
   }
   if (!canManageWorkspace(context.role)) {

@@ -2,11 +2,15 @@ import { NextResponse } from "next/server";
 import { canManageWorkspace, getCurrentWorkspaceContext } from "@/lib/workspace-access";
 import { getBaseUrl, getMissingInstagramOAuthEnv } from "@/lib/env";
 import { createOAuthState, getAuthorizationUrl } from "@/lib/meta/oauth";
+import { isWorkspaceOperational } from "@/lib/access-control";
 
 export async function GET() {
   const context = await getCurrentWorkspaceContext();
   if (!context) {
     return NextResponse.redirect(`${getBaseUrl()}/login`);
+  }
+  if (!isWorkspaceOperational(context.workspace)) {
+    return NextResponse.redirect(`${getBaseUrl()}/access-blocked`);
   }
   if (!canManageWorkspace(context.role)) {
     return NextResponse.redirect(`${getBaseUrl()}/settings?instagram=forbidden`);

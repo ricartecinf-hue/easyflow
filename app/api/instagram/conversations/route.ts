@@ -8,6 +8,8 @@ import {
   MetaApiError,
 } from "@/lib/meta/client";
 import { decryptToken } from "@/lib/meta/oauth";
+import { isWorkspaceOperational } from "@/lib/access-control";
+import { getCurrentWorkspaceContext } from "@/lib/workspace-access";
 
 export interface ConversationListItem {
   id: string;
@@ -185,13 +187,22 @@ export async function GET(request: NextRequest) {
 
 // Send a direct message reply.
 export async function POST(request: NextRequest) {
-  const workspaceId = await getCurrentWorkspaceId();
-  if (!workspaceId) {
+  const context = await getCurrentWorkspaceContext();
+  if (!context) {
     return NextResponse.json(
       { success: false, error: "Unauthorized" },
       { status: 401 }
     );
   }
+
+  if (!isWorkspaceOperational(context.workspace)) {
+    return NextResponse.json(
+      { success: false, error: "Conta desativada" },
+      { status: 403 }
+    );
+  }
+
+  const workspaceId = context.workspaceId;
 
   let body: { instagramAccountId?: string; recipientId?: string; text?: string };
   try {

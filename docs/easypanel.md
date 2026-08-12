@@ -53,6 +53,10 @@ Environment variables (Service → Environment):
 | `INSTAGRAM_APP_SECRET` | From the Meta app |
 | `FACEBOOK_APP_SECRET` | From the Meta app |
 | `WEBHOOK_VERIFY_TOKEN` | Any random string, reused in Meta's webhook config |
+| `ADMIN_EMAILS` | Comma-separated login emails allowed to open `/admin` |
+| `ASAAS_API_KEY` | Asaas production API key used to match a customer by email |
+| `ASAAS_WEBHOOK_TOKEN` | Random token configured in the Asaas webhook (`asaas-access-token`) |
+| `ASAAS_GRACE_PERIOD_DAYS` | Days a late paid account can keep operating (default: `3`) |
 
 Health check path: `/api/health` (port `80`).
 
@@ -141,3 +145,31 @@ Hit `https://easyflow.yourdomain.com/api/health`. `database`, `redis`, and
 container has sent its first heartbeat (up to 30s after it starts). If
 `worker.healthy` stays `false`, check the worker service's logs and confirm
 it has the same `REDIS_URL` as the web app.
+
+## 8. Access administration and Asaas
+
+After setting `ADMIN_EMAILS`, sign in with one of those addresses and open
+`https://easyflow.yourdomain.com/admin`. This page shows total users,
+connected Instagram accounts, recent active users, campaigns and DMs. It also
+allows an administrator to:
+
+- activate or deactivate an account manually;
+- classify it as **Free** or **Paid / Asaas**;
+- preserve a free test account from payment webhook changes.
+
+New workspaces start blocked and paid. Existing workspaces present when the
+access migration runs are preserved as active and free, so a production
+migration does not interrupt current testers.
+
+Create one Asaas payment webhook with:
+
+```text
+URL: https://easyflow.yourdomain.com/api/webhooks/asaas
+Authentication token: the exact ASAAS_WEBHOOK_TOKEN value
+```
+
+Subscribe at least to payment confirmed/received, overdue, refunded,
+chargeback and deleted events. EasyFlow deduplicates webhook events by their
+Asaas event ID. It matches a paid account by the stored Asaas customer ID or,
+on the first event, by the Asaas customer's email and the EasyFlow owner's
+login email. A manually free account is never blocked by Asaas.

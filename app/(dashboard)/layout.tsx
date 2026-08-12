@@ -2,6 +2,11 @@ import { redirect } from "next/navigation";
 import DashboardShell from "@/components/dashboard-shell";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db/client";
+import {
+  isSystemAdmin,
+  isWorkspaceOperational,
+  recordWorkspaceAccess,
+} from "@/lib/access-control";
 import { ensureWorkspaceForUser } from "@/lib/workspace";
 
 export default async function DashboardLayout({
@@ -19,6 +24,14 @@ export default async function DashboardLayout({
     session.user.id,
     session.user.email
   );
+  const systemAdmin = isSystemAdmin(session.user.email);
+
+  if (!systemAdmin && !isWorkspaceOperational(workspace)) {
+    redirect("/access-blocked");
+  }
+
+  await recordWorkspaceAccess(workspace.id, session.user.id);
+
   const accounts = await prisma.instagramAccount.findMany({
     where: { workspaceId: workspace.id },
     orderBy: { connectedAt: "desc" },
@@ -30,6 +43,7 @@ export default async function DashboardLayout({
       workspaceName={workspace.name}
       instagramUsername={accounts[0]?.username ?? null}
       instagramAccountCount={accounts.length}
+      isSystemAdmin={systemAdmin}
     >
       {children}
     </DashboardShell>

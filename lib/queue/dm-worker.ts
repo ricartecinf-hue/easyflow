@@ -38,6 +38,7 @@ import {
   renderMessageWithTracking,
   renderMessageWithoutLink,
 } from "@/lib/tracking/message";
+import { isWorkspaceOperational } from "@/lib/access-control";
 
 const BACKOFF_DELAYS = [5 * 60 * 1000, 15 * 60 * 1000, 45 * 60 * 1000];
 
@@ -1179,6 +1180,18 @@ async function processMessage(job: Job<ProcessMessageJob>): Promise<void> {
 }
 
 async function processJob(job: Job<DmQueueJob>): Promise<void> {
+  const account = await prisma.instagramAccount.findUnique({
+    where: { instagramId: job.data.instagramAccountId },
+    include: { workspace: true },
+  });
+
+  if (!account || !isWorkspaceOperational(account.workspace)) {
+    console.log(
+      `[DM Worker] Skipping job ${job.id ?? "unknown"}: account access is disabled`
+    );
+    return;
+  }
+
   if (job.name === POSTBACK_JOB_NAME) {
     return processPostback(job as Job<ProcessPostbackJob>);
   }
@@ -1283,4 +1296,3 @@ export function createDMWorker(): Worker<DmQueueJob> {
 
   return worker;
 }
-

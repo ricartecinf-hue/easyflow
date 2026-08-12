@@ -10,6 +10,7 @@ import {
   canManageWorkspace,
   getCurrentWorkspaceContext,
 } from "@/lib/workspace-access";
+import { isWorkspaceOperational } from "@/lib/access-control";
 
 // This list is read-your-writes (created/imported campaigns must show up
 // immediately), so never cache it at the route or CDN layer.
@@ -284,6 +285,13 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  if (!isWorkspaceOperational(context.workspace)) {
+    return NextResponse.json(
+      { success: false, error: "Conta desativada" },
+      { status: 403 }
+    );
+  }
+
   if (!canManageWorkspace(context.role)) {
     return NextResponse.json(
       { success: false, error: "Only owners and admins can create campaigns" },
@@ -454,6 +462,13 @@ export async function PATCH(request: NextRequest) {
     );
   }
 
+  if (!isWorkspaceOperational(context.workspace)) {
+    return NextResponse.json(
+      { success: false, error: "Conta desativada" },
+      { status: 403 }
+    );
+  }
+
   if (!canManageWorkspace(context.role)) {
     return NextResponse.json(
       { success: false, error: "Only owners and admins can update campaigns" },
@@ -613,6 +628,13 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json(
       { success: false, error: "Unauthorized" },
       { status: 401 }
+    );
+  }
+
+  if (!isWorkspaceOperational(context.workspace)) {
+    return NextResponse.json(
+      { success: false, error: "Conta desativada" },
+      { status: 403 }
     );
   }
 

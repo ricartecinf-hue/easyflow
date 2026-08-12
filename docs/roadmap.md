@@ -1,5 +1,9 @@
 # Roadmap do EasyFlow
 
+> Implementado no código em agosto de 2026. A publicação em produção depende
+> da migração do banco e da configuração das variáveis do administrador/Asaas
+> descritas em `docs/easypanel.md`.
+
 ## Próximo módulo: administração de usuários e cobrança pelo Asaas
 
 Objetivo: permitir que o administrador acompanhe o uso do EasyFlow, libere ou
@@ -57,4 +61,3 @@ Asaas.
 3. Painel administrativo com ativação, bloqueio e acesso gratuito.
 4. Integração de clientes, assinaturas e webhooks do Asaas.
 5. Testes de pagamento, atraso, cancelamento, reativação e acesso gratuito.
-

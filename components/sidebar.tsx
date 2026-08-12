@@ -23,12 +23,14 @@ interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
   workspaceName: string;
+  isSystemAdmin: boolean;
 }
 
 export default function Sidebar({
   isOpen,
   onClose,
   workspaceName,
+  isSystemAdmin,
 }: SidebarProps) {
   const pathname = usePathname();
 
@@ -79,6 +81,20 @@ export default function Sidebar({
               </Link>
             );
           })}
+          {isSystemAdmin && (
+            <Link
+              href="/admin"
+              onClick={onClose}
+              aria-current={pathname.startsWith("/admin") ? "page" : undefined}
+              className={`block px-3 py-2.5 rounded text-sm ${
+                pathname.startsWith("/admin")
+                  ? "bg-surface-hover text-foreground font-medium"
+                  : "text-muted hover:text-foreground hover:bg-surface-hover"
+              }`}
+            >
+              Administração
+            </Link>
+          )}
         </nav>
 
         <div className="px-5 py-4 border-t border-border">

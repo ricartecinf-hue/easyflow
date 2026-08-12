@@ -227,6 +227,12 @@ beforeEach(() => {
   mockPrisma.dmLog.update.mockResolvedValue({});
   mockPrisma.instagramAccount.findUnique.mockResolvedValue({
     workspaceId: "workspace_123",
+    workspace: {
+      accessStatus: "ACTIVE",
+      accessMode: "FREE",
+      accessExpiresAt: null,
+      gracePeriodEndsAt: null,
+    },
   });
   mockPrisma.operationalEvent.create.mockResolvedValue({});
   mockDecryptToken.mockReturnValue("decrypted_token");
@@ -276,6 +282,25 @@ beforeEach(() => {
 });
 
 describe("DM Worker — Full Pipeline", () => {
+  it("should not send anything when the workspace is blocked", async () => {
+    mockPrisma.instagramAccount.findUnique.mockResolvedValue({
+      workspaceId: "workspace_123",
+      workspace: {
+        accessStatus: "BLOCKED",
+        accessMode: "PAID",
+        accessExpiresAt: null,
+        gracePeriodEndsAt: null,
+      },
+    });
+    const processor = getProcessor();
+
+    await processor(createMockJob());
+
+    expect(mockPrisma.automation.findMany).not.toHaveBeenCalled();
+    expect(mockSendPrivateReply).not.toHaveBeenCalled();
+    expect(mockSendDirectMessage).not.toHaveBeenCalled();
+  });
+
   it("should send a private reply for a matching comment", async () => {
     const processor = getProcessor();
 
