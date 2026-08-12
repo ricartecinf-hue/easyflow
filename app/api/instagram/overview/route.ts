@@ -16,7 +16,7 @@ export const maxDuration = 60;
 // Safety ceiling for "all time": bounds pagination and the number of
 // per-media insight requests so we can't hammer the API or time out.
 const MAX_POSTS = 500;
-const DEFAULT_POSTS = 2;
+const DEFAULT_POSTS = 8;
 
 // How many insight requests to run at once.
 const INSIGHTS_CONCURRENCY = 8;

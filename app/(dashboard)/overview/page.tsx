@@ -25,7 +25,7 @@ function formatDate(iso: string): string {
   return d.toLocaleDateString("pt-BR", { month: "short", day: "numeric" });
 }
 
-const INITIAL_POST_COUNT = 2;
+const INITIAL_POST_COUNT = 8;
 const LOAD_MORE_COUNT = 10;
 
 export default function OverviewPage() {
