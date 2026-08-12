@@ -11,7 +11,6 @@
 import { useEffect, useState } from "react";
 import AccountSelect from "@/components/account-select";
 import StatCard from "@/components/stat-card";
-import FollowerChart from "@/components/follower-chart";
 import type { OverviewResponse } from "@/app/api/instagram/overview/route";
 
 function formatNumber(n: number | null): string {
@@ -102,8 +101,7 @@ export default function OverviewPage() {
 
   if (!data) return null;
 
-  const { totals, posts, accounts, insightsAvailable, followers, followerHistory } =
-    data;
+  const { totals, posts, accounts, insightsAvailable } = data;
 
   return (
     <div className="space-y-8">
@@ -116,13 +114,6 @@ export default function OverviewPage() {
             {data.account.username}
             {data.truncated ? ` (limitado a ${totals.posts})` : ""}
           </p>
-          {followers !== null && (
-            // Kept out of the tile row below: that row sums the selected posts,
-            // whereas this is a current account-level total.
-            <p className="mt-1 text-sm text-muted">
-              {followers.toLocaleString("pt-BR")} seguidores
-            </p>
-          )}
         </div>
         <div className="flex flex-wrap items-end gap-x-4 gap-y-3">
           <label className="flex flex-col gap-2 text-sm">
@@ -181,9 +172,6 @@ export default function OverviewPage() {
         <StatCard label="Salvos" value={formatNumber(totals.saved)} />
         <StatCard label="Compartilhamentos" value={formatNumber(totals.shares)} />
       </div>
-
-      {/* Follower trend — account-level, independent of the post range */}
-      <FollowerChart data={followerHistory} followers={followers} />
 
       {/* Per-post table */}
       <div className="panel rounded p-4 sm:p-6">

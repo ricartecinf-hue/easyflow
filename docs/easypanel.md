@@ -110,7 +110,7 @@ run `npm run db:migrate` there. It already has the correct internal
 
 ## 5. Cron jobs
 
-`vercel.json`'s crons don't run on Easypanel. Recreate the same three
+`vercel.json`'s crons don't run on Easypanel. Recreate the same two
 schedules as Easypanel **Cron Jobs** (project-level, not tied to a specific
 app service), each running `curlimages/curl` against the web app's internal
 address:
@@ -119,7 +119,6 @@ address:
 | --- | --- | --- |
 | `0 5 * * *` | Refresh Meta tokens close to expiration and reset the monthly usage counter. | `curl -sf -H "Authorization: Bearer $CRON_SECRET" http://easyflow:80/api/cron/refresh-tokens` |
 | `0 6 * * *` | Attach campaigns configured for the “next reel” to the reel published after their creation. | `curl -sf -H "Authorization: Bearer $CRON_SECRET" http://easyflow:80/api/cron/attach-next-reel` |
-| `0 7 * * *` | Record the daily follower total used by the long-term follower chart. | `curl -sf -H "Authorization: Bearer $CRON_SECRET" http://easyflow:80/api/cron/snapshot-followers` |
 
 Replace `easyflow` with whatever you actually named the web service, and
 set `CRON_SECRET` in the cron job's own environment to the same value as the

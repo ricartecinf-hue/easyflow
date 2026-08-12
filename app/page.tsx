@@ -122,34 +122,6 @@ function OverviewPreview() {
       </div>
 
       <div className="mt-4 rounded border border-border bg-surface p-4">
-        <div className="flex items-baseline justify-between">
-          <p className="text-sm font-semibold text-foreground">
-            Evolução de seguidores
-          </p>
-          <p className="text-xs text-muted">
-            48,210 <span className="text-success">+1,240</span> · 30d
-          </p>
-        </div>
-        <svg
-          viewBox="0 0 300 64"
-          preserveAspectRatio="none"
-          className="mt-3 h-16 w-full"
-          aria-hidden="true"
-        >
-          <polyline
-            points="0,54 43,49 86,51 129,40 171,36 214,26 257,20 300,9"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            vectorEffect="non-scaling-stroke"
-            className="text-accent"
-          />
-        </svg>
-      </div>
-
-      <div className="mt-4 rounded border border-border bg-surface p-4">
         <p className="text-sm font-semibold text-foreground">Publicações</p>
         <table className="mt-3 w-full text-sm">
           <thead>
