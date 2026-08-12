@@ -55,14 +55,14 @@ export default function SeoPageShell({ config }: { config: SeoPageConfig }) {
                 href="/templates"
                 className="inline-flex items-center justify-center border border-white/10 bg-white/[0.04] px-6 py-3 text-sm font-bold text-white transition hover:border-white/20 hover:bg-white/[0.08]"
               >
-                {config.secondaryCta ?? "Browse templates"}
+                {config.secondaryCta ?? "Ver modelos"}
               </Link>
             </div>
           </div>
 
           <div className="border border-white/10 bg-white/[0.035] p-6">
             <p className="text-xs font-bold uppercase tracking-wide text-zinc-500">
-              Campaign OS checklist
+              Recursos da campanha
             </p>
             <ul className="mt-5 space-y-4">
               {config.bullets.map((bullet) => (
@@ -91,9 +91,9 @@ export default function SeoPageShell({ config }: { config: SeoPageConfig }) {
           <h2 className="text-4xl font-black text-white">{config.comparisonTitle}</h2>
           <div className="mt-8 overflow-hidden border border-white/10">
             <div className="grid grid-cols-[0.8fr_1fr_1fr] border-b border-white/10 bg-zinc-950 text-xs font-bold uppercase tracking-wide text-zinc-500">
-              <div className="p-4">Need</div>
-              <div className="p-4 text-cyan-100">OpenReply</div>
-              <div className="p-4">Generic automation</div>
+              <div className="p-4">Necessidade</div>
+              <div className="p-4 text-cyan-100">EasyFlow</div>
+              <div className="p-4">Automação genérica</div>
             </div>
             {config.comparisons.map((item) => (
               <div
@@ -118,14 +118,14 @@ export default function SeoPageShell({ config }: { config: SeoPageConfig }) {
       <section className="mx-auto grid w-full max-w-7xl gap-8 px-5 py-16 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
         <div>
           <p className="text-sm font-bold uppercase text-emerald-200">
-            Start from a template
+            Comece com um modelo
           </p>
           <h2 className="mt-3 text-4xl font-black text-white">
-            Launch a campaign faster than building a chatbot flow
+            Lance uma campanha sem precisar criar um fluxo de chatbot
           </h2>
           <p className="mt-5 text-sm leading-7 text-zinc-400">
-            Use a campaign template, connect the right Instagram account, pick
-            the post, and ship a measurable comment-to-DM loop.
+            Use um modelo, conecte a conta certa do Instagram, escolha a
+            publicação e lance uma automação mensurável de comentários para DM.
           </p>
         </div>
         <div className="grid gap-3 sm:grid-cols-2">
@@ -146,7 +146,7 @@ export default function SeoPageShell({ config }: { config: SeoPageConfig }) {
           <div>
             <p className="text-sm font-bold uppercase text-cyan-200">FAQ</p>
             <h2 className="mt-3 text-4xl font-black text-white">
-              Search questions, answered clearly
+              Dúvidas frequentes, respondidas com clareza
             </h2>
           </div>
           <div className="grid gap-3">
@@ -163,21 +163,21 @@ export default function SeoPageShell({ config }: { config: SeoPageConfig }) {
       <section className="mx-auto w-full max-w-7xl px-5 py-16 sm:px-6 lg:px-8">
         <div className="border border-cyan-200/20 bg-cyan-300/10 p-8 text-center">
           <h2 className="text-4xl font-black text-white">
-            Turn the next high-intent comment into a private reply
+            Transforme o próximo comentário interessado em uma resposta privada
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-zinc-300">
-            OpenReply is built for Instagram professional accounts, official
-            Meta private replies, and campaign reporting teams can show clients.
+            O EasyFlow foi criado para contas profissionais do Instagram,
+            respostas privadas oficiais da Meta e relatórios que sua equipe pode
+            apresentar aos clientes.
           </p>
           <Link
             href="/login"
             className="mt-8 inline-flex items-center justify-center bg-cyan-300 px-6 py-3 text-sm font-bold text-zinc-950 transition hover:bg-cyan-200"
           >
-            Start free
+            Começar grátis
           </Link>
         </div>
       </section>
     </main>
   );
 }
-

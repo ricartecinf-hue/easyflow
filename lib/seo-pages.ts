@@ -1,237 +1,236 @@
 import type { SeoPageConfig } from "@/components/seo-page-shell";
 
 const templateLinks = [
-  { label: "DTC product link template", href: "/templates/dtc-product-link" },
-  { label: "Real estate lead form template", href: "/templates/real-estate-lead-form" },
-  { label: "Fitness plan template", href: "/templates/fitness-plan" },
-  { label: "Browse every template", href: "/templates" },
+  { label: "Modelo de link de produto", href: "/templates/dtc-product-link" },
+  { label: "Modelo para captação imobiliária", href: "/templates/real-estate-lead-form" },
+  { label: "Modelo de plano fitness", href: "/templates/fitness-plan" },
+  { label: "Ver todos os modelos", href: "/templates" },
 ];
 
 export const manychatAlternativePage: SeoPageConfig = {
-  eyebrow: "Manychat alternative",
-  title: "A focused Manychat alternative for Instagram comment-to-DM campaigns",
+  eyebrow: "Alternativa ao Manychat",
+  title: "Uma alternativa objetiva ao Manychat para campanhas de comentários para DM",
   description:
-    "OpenReply is for teams that do not need a broad chatbot builder. It turns keyword comments into Meta-compliant private replies, tracked links, campaign analytics, and client reports.",
-  primaryCta: "Try the focused alternative",
+    "O EasyFlow transforma comentários com palavras-chave em respostas privadas pela Meta, links rastreados, análises de campanha e relatórios para clientes.",
+  primaryCta: "Experimentar o EasyFlow",
   bullets: [
-    "Built around Instagram comments, posts, reels, and private replies.",
-    "Official Meta API flow with no scraping or password sharing.",
-    "Campaign templates, tracked links, and shareable client reports.",
-    "Open-source core with hosted SaaS for agencies that want managed reliability.",
+    "Criado para comentários, publicações, reels e respostas privadas no Instagram.",
+    "Integração pela API oficial da Meta, sem scraping ou compartilhamento de senha.",
+    "Modelos de campanhas, links rastreados e relatórios compartilháveis.",
+    "Núcleo de código aberto com hospedagem própria.",
   ],
   sections: [
     {
-      title: "Narrower by design",
-      body: "Broad automation suites can be powerful, but they also add flow-builder weight. OpenReply keeps the campaign path tight: keyword, post, reply, link, result.",
+      title: "Objetivo por definição",
+      body: "O EasyFlow mantém o caminho da campanha simples: palavra-chave, publicação, resposta, link e resultado.",
     },
     {
-      title: "Agency proof",
-      body: "Tracked links and shareable reports make it easier to show clients what happened after the comment, not just that a message was sent.",
+      title: "Resultados para clientes",
+      body: "Links rastreados e relatórios compartilháveis mostram o que aconteceu após o comentário, além do simples envio da mensagem.",
     },
     {
-      title: "Meta-first delivery",
-      body: "Comment events are processed through webhooks, queued, deduped, checked against limits, and sent as private replies using the comment ID.",
+      title: "Entrega pela Meta",
+      body: "Os comentários passam por webhooks, filas, deduplicação e limites antes do envio da resposta privada pela API oficial.",
     },
   ],
-  comparisonTitle: "OpenReply vs broad chatbot builders",
+  comparisonTitle: "EasyFlow e construtores amplos de chatbot",
   comparisons: [
     {
-      label: "Setup",
-      ours: "Create a keyword campaign for a specific post or reel.",
-      other: "Build and maintain a larger chatbot automation flow.",
+      label: "Configuração",
+      ours: "Crie uma campanha por palavra-chave para uma publicação ou reel.",
+      other: "Crie e mantenha um fluxo maior de automação de chatbot.",
     },
     {
-      label: "Reporting",
-      ours: "Campaign-level sends, skips, failures, clicks, CTR, and client report links.",
-      other: "Usually broader conversation analytics that need cleanup for client reporting.",
+      label: "Relatórios",
+      ours: "Envios, descartes, falhas, cliques, CTR e relatórios por campanha.",
+      other: "Análises amplas de conversas que exigem tratamento para apresentar ao cliente.",
     },
     {
-      label: "Positioning",
-      ours: "Instagram Campaign OS for agencies and campaign teams.",
-      other: "General DM automation across many channels and use cases.",
+      label: "Foco",
+      ours: "Automação de campanhas do Instagram para equipes e agências.",
+      other: "Automação geral de DMs em diversos canais e casos de uso.",
     },
   ],
   templateLinks,
   faqs: [
     {
-      title: "Is OpenReply a full Manychat replacement?",
-      body: "No. OpenReply is intentionally focused on Instagram comment-to-DM campaigns. If you need a complete chatbot suite, use a broad platform. If you need fast campaign loops, OpenReply is built for that.",
+      title: "O EasyFlow substitui totalmente o Manychat?",
+      body: "Não. O EasyFlow é focado em campanhas de comentários para DM no Instagram. Para um chatbot completo, use uma plataforma ampla; para campanhas rápidas e mensuráveis, use o EasyFlow.",
     },
     {
-      title: "Does it support agencies?",
-      body: "Yes. It supports multiple Instagram accounts, workspace members, account filters, analytics, and shareable reports, with no account limit.",
+      title: "Funciona para agências?",
+      body: "Sim. O sistema oferece várias contas do Instagram, membros no espaço de trabalho, filtros, análises e relatórios compartilháveis.",
     },
   ],
 };
 
 export const templatesSeoPage: SeoPageConfig = {
-  eyebrow: "Instagram comment-to-DM templates",
-  title: "Instagram comment-to-DM templates for high-intent campaign replies",
+  eyebrow: "Modelos de comentários para DM",
+  title: "Modelos para responder comentários interessados por DM no Instagram",
   description:
-    "Start with proven campaign patterns for product links, lead magnets, price replies, launch waitlists, coaching offers, events, and local services.",
-  primaryCta: "Use a template",
+    "Comece com campanhas para links de produtos, materiais gratuitos, preços, listas de espera, consultorias, eventos e serviços locais.",
+  primaryCta: "Usar um modelo",
   bullets: [
-    "Template intent carries into signup and campaign creation.",
-    "Each template includes keywords, a campaign goal, and reply copy.",
-    "Tracked links turn template replies into measurable clicks.",
-    "Agencies can reuse templates across client accounts.",
+    "O modelo escolhido acompanha o usuário até a criação da campanha.",
+    "Cada modelo inclui palavras-chave, objetivo e texto de resposta.",
+    "Links rastreados transformam respostas em cliques mensuráveis.",
+    "Agências podem reutilizar modelos em diferentes contas.",
   ],
   sections: [
     {
-      title: "Product link drops",
-      body: "Use LINK, SHOP, BUY, or SIZE comments to send exact product pages, launch bundles, or collection links.",
+      title: "Links de produtos",
+      body: "Use comentários como LINK, COMPRAR ou TAMANHO para enviar a página exata do produto, oferta ou coleção.",
     },
     {
-      title: "Lead magnets",
-      body: "Use GUIDE, CHECKLIST, PLAN, or START comments to send free resources and follow-up offers.",
+      title: "Materiais gratuitos",
+      body: "Use GUIA, CHECKLIST, PLANO ou COMEÇAR para entregar materiais e ofertas de acompanhamento.",
     },
     {
-      title: "Local services",
-      body: "Use PRICE, BOOK, INFO, or TOUR comments to deliver booking links, quote forms, and local offer pages.",
+      title: "Serviços locais",
+      body: "Use PREÇO, AGENDAR, INFO ou VISITA para entregar agendamentos, orçamentos e páginas de ofertas.",
     },
   ],
-  comparisonTitle: "Template campaigns vs manual inbox replies",
+  comparisonTitle: "Campanhas com modelos e respostas manuais",
   comparisons: [
     {
-      label: "Speed",
-      ours: "Launch from reusable campaign templates in minutes.",
-      other: "Reply manually or rebuild the same campaign copy each time.",
+      label: "Velocidade",
+      ours: "Lance modelos reutilizáveis de campanhas em minutos.",
+      other: "Responda manualmente ou reescreva a campanha a cada vez.",
     },
     {
-      label: "Measurement",
-      ours: "Use tracked links and keyword analytics per campaign.",
-      other: "Rely on screenshots, inbox memory, or scattered link data.",
+      label: "Medição",
+      ours: "Use links rastreados e análises de palavras-chave por campanha.",
+      other: "Dependa de capturas de tela, memória ou dados espalhados.",
     },
     {
-      label: "Reuse",
-      ours: "Clone the same playbook across posts, reels, and client accounts.",
-      other: "Repeat setup work for every campaign.",
+      label: "Reutilização",
+      ours: "Duplique a estratégia entre publicações, reels e contas de clientes.",
+      other: "Repita toda a configuração a cada campanha.",
     },
   ],
   templateLinks,
   faqs: [
     {
-      title: "Can I edit the template copy?",
-      body: "Yes. Templates are starting points. You can change keywords, private reply text, tracked destination URLs, and active status before launching.",
+      title: "Posso editar o texto do modelo?",
+      body: "Sim. Você pode alterar palavras-chave, resposta privada, endereço de destino e estado da campanha antes de publicá-la.",
     },
     {
-      title: "Do templates work for reels?",
-      body: "Yes. Campaigns can target Instagram posts or reels returned by the connected professional account.",
+      title: "Os modelos funcionam em reels?",
+      body: "Sim. As campanhas podem usar publicações ou reels da conta profissional conectada.",
     },
   ],
 };
 
 export const agenciesSeoPage: SeoPageConfig = {
-  eyebrow: "Instagram DM automation for agencies",
-  title: "Instagram DM automation for agencies managing client campaigns",
+  eyebrow: "Automação de DMs para agências",
+  title: "Automação de DMs no Instagram para campanhas de clientes",
   description:
-    "OpenReply gives agencies multi-account workspaces, client-ready reports, tracked links, and a focused comment-to-DM workflow for repeatable Instagram campaigns.",
-  primaryCta: "Start an agency workspace",
+    "O EasyFlow oferece várias contas, relatórios para clientes, links rastreados e um fluxo objetivo de comentários para DM.",
+  primaryCta: "Criar espaço da agência",
   bullets: [
-    "Connect multiple client Instagram accounts on the Agency plan.",
-    "Filter dashboards, logs, campaigns, and settings by account.",
-    "Invite teammates as owners, admins, or members.",
-    "Share read-only client reports without exposing workspace controls.",
+    "Conecte várias contas profissionais do Instagram.",
+    "Filtre painéis, registros, campanhas e configurações por conta.",
+    "Convide integrantes como proprietários, administradores ou membros.",
+    "Compartilhe relatórios somente para leitura sem expor os controles internos.",
   ],
   sections: [
     {
-      title: "Client separation",
-      body: "Account filters keep campaign creation, logs, and reporting cleaner when one workspace manages multiple brands.",
+      title: "Separação por cliente",
+      body: "Filtros por conta mantêm campanhas, registros e relatórios organizados quando um espaço administra várias marcas.",
     },
     {
-      title: "Repeatable offers",
-      body: "Use templates to package lead magnets, product drops, price replies, and launch waitlists as repeatable agency services.",
+      title: "Ofertas replicáveis",
+      body: "Use modelos para oferecer materiais gratuitos, lançamentos, respostas de preço e listas de espera como serviços recorrentes.",
     },
     {
-      title: "Proof of work",
-      body: "Shareable reports show sends, skips, failures, clicks, CTR, top keywords, and tracked links in a client-safe view.",
+      title: "Comprovação do trabalho",
+      body: "Relatórios mostram envios, descartes, falhas, cliques, CTR, palavras-chave e links rastreados.",
     },
   ],
-  comparisonTitle: "Agency workflow vs generic automation",
+  comparisonTitle: "Fluxo para agências e automação genérica",
   comparisons: [
     {
-      label: "Client reporting",
-      ours: "Public read-only campaign report links, unbranded, with no plan gating.",
-      other: "Manual screenshots or dashboards that expose too much internal workspace context.",
+      label: "Relatório ao cliente",
+      ours: "Links públicos e somente para leitura, sem expor controles internos.",
+      other: "Capturas manuais ou painéis que mostram informações demais.",
     },
     {
-      label: "Team roles",
-      ours: "Owner, admin, and member roles with invite links.",
-      other: "Often one shared login or overpowered teammate access.",
+      label: "Papéis da equipe",
+      ours: "Proprietário, administrador e membro com convites individuais.",
+      other: "Uma conta compartilhada ou permissões excessivas.",
     },
     {
-      label: "Account operations",
-      ours: "Per-account filters for campaigns, logs, dashboard stats, and settings.",
-      other: "Client work can get mixed across broad automation workspaces.",
+      label: "Operação das contas",
+      ours: "Filtros por conta para campanhas, registros, estatísticas e configurações.",
+      other: "Trabalhos de clientes podem se misturar em espaços genéricos.",
     },
   ],
   templateLinks,
   faqs: [
     {
-      title: "How many Instagram accounts can agencies connect?",
-      body: "The Agency plan is shaped for up to 10 connected Instagram professional accounts in the current launch packaging.",
+      title: "Quantas contas do Instagram posso conectar?",
+      body: "O EasyFlow aceita várias contas profissionais dentro do mesmo espaço de trabalho.",
     },
     {
-      title: "Can clients see reports without logging in?",
-      body: "Yes. Shareable report pages are public read-only links that hide private workspace controls and DM copy.",
+      title: "O cliente pode ver relatórios sem entrar no sistema?",
+      body: "Sim. Os relatórios compartilháveis são páginas públicas somente para leitura e não exibem os controles privados.",
     },
   ],
 };
 
 export const commentLinkSeoPage: SeoPageConfig = {
-  eyebrow: "Comment LINK automation",
-  title: "Comment LINK automation for Instagram posts and reels",
+  eyebrow: "Automação do comentário LINK",
+  title: "Automatize comentários com LINK em publicações e reels do Instagram",
   description:
-    "Let followers comment LINK, SHOP, GUIDE, or any keyword and receive the right private reply with a tracked destination URL.",
-  primaryCta: "Automate comment LINK",
+    "Permita que seguidores comentem LINK, COMPRAR, GUIA ou outra palavra e recebam a resposta privada correta com um endereço rastreado.",
+  primaryCta: "Automatizar comentários",
   bullets: [
-    "Match exact keywords or whole-word phrases.",
-    "Send Meta-compliant private replies from the triggering comment.",
-    "Insert tracked links into replies with click analytics.",
-    "Deduplicate comment jobs and log sent, skipped, and failed outcomes.",
+    "Identifique palavras exatas ou frases completas.",
+    "Envie respostas privadas compatíveis com a Meta a partir do comentário.",
+    "Inclua links rastreados com análise de cliques.",
+    "Evite duplicidades e registre envios, descartes e falhas.",
   ],
   sections: [
     {
-      title: "For product links",
-      body: "Turn high-intent LINK comments into tracked visits to product pages, landing pages, waitlists, or checkout offers.",
+      title: "Para links de produtos",
+      body: "Transforme comentários com LINK em visitas rastreadas para produtos, páginas de venda, listas de espera ou ofertas.",
     },
     {
-      title: "For creator offers",
-      body: "Send guides, free resources, course links, and coaching applications without manually watching the inbox.",
+      title: "Para ofertas de criadores",
+      body: "Envie guias, materiais gratuitos, cursos e formulários de consultoria sem acompanhar a caixa de entrada manualmente.",
     },
     {
-      title: "For launch spikes",
-      body: "Queue and process campaign replies while a reel is getting attention, with plan and rate-limit checks in the worker.",
+      title: "Para picos de lançamento",
+      body: "Enfileire as respostas enquanto o reel ganha alcance, com verificações de volume e limites no worker.",
     },
   ],
-  comparisonTitle: "Comment LINK automation vs manual link replies",
+  comparisonTitle: "Automação do comentário LINK e respostas manuais",
   comparisons: [
     {
-      label: "Reply accuracy",
-      ours: "Every matched comment gets the campaign reply tied to that post or reel.",
-      other: "Manual replies are easy to miss when comments spike.",
+      label: "Precisão",
+      ours: "Cada comentário identificado recebe a resposta ligada àquela publicação.",
+      other: "Respostas manuais se perdem facilmente durante picos de comentários.",
     },
     {
-      label: "Tracking",
-      ours: "Tracked links connect private replies to click outcomes.",
-      other: "Regular pasted links rarely show campaign-level performance.",
+      label: "Rastreamento",
+      ours: "Links rastreados conectam as respostas privadas aos cliques.",
+      other: "Links comuns raramente mostram o desempenho por campanha.",
     },
     {
-      label: "Compliance",
-      ours: "Built around official private reply semantics and rate-aware queues.",
-      other: "Unsafe browser automation or scraping can put accounts at risk.",
+      label: "Conformidade",
+      ours: "Criado para respostas privadas oficiais e filas que respeitam limites.",
+      other: "Scraping ou automação de navegador podem colocar a conta em risco.",
     },
   ],
   templateLinks,
   faqs: [
     {
-      title: "Can I use keywords other than LINK?",
-      body: "Yes. Each campaign can use multiple keywords such as PRICE, SHOP, GUIDE, PLAN, WAITLIST, TOUR, or your own phrase.",
+      title: "Posso usar palavras diferentes de LINK?",
+      body: "Sim. Cada campanha aceita várias palavras, como PREÇO, COMPRAR, GUIA, PLANO, LISTA, VISITA ou uma frase personalizada.",
     },
     {
-      title: "Does OpenReply send a normal Instagram DM?",
-      body: "It sends a Meta-compliant private reply triggered by the comment event, using the Instagram comment ID.",
+      title: "O EasyFlow envia uma DM normal do Instagram?",
+      body: "Ele envia uma resposta privada compatível com a Meta, acionada pelo comentário e vinculada ao identificador desse comentário.",
     },
   ],
 };
-

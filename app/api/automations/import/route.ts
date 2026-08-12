@@ -109,7 +109,7 @@ export async function POST(request: NextRequest) {
                 create: {
                   workspaceId: context.workspaceId,
                   slug: generateTrackedLinkSlug(),
-                  label: "Primary campaign link",
+                  label: "Link principal da campanha",
                   destinationUrl: validTrackedUrl,
                 },
               },

@@ -115,13 +115,13 @@ schedules as Easypanel **Cron Jobs** (project-level, not tied to a specific
 app service), each running `curlimages/curl` against the web app's internal
 address:
 
-| Schedule | Command |
-| --- | --- |
-| `0 5 * * *` | `curl -sf -H "Authorization: Bearer $CRON_SECRET" http://easyflow-web:3000/api/cron/refresh-tokens` |
-| `0 6 * * *` | `curl -sf -H "Authorization: Bearer $CRON_SECRET" http://easyflow-web:3000/api/cron/attach-next-reel` |
-| `0 7 * * *` | `curl -sf -H "Authorization: Bearer $CRON_SECRET" http://easyflow-web:3000/api/cron/snapshot-followers` |
+| Schedule | Purpose | Command |
+| --- | --- | --- |
+| `0 5 * * *` | Refresh Meta tokens close to expiration and reset the monthly usage counter. | `curl -sf -H "Authorization: Bearer $CRON_SECRET" http://easyflow:80/api/cron/refresh-tokens` |
+| `0 6 * * *` | Attach campaigns configured for the “next reel” to the reel published after their creation. | `curl -sf -H "Authorization: Bearer $CRON_SECRET" http://easyflow:80/api/cron/attach-next-reel` |
+| `0 7 * * *` | Record the daily follower total used by the long-term follower chart. | `curl -sf -H "Authorization: Bearer $CRON_SECRET" http://easyflow:80/api/cron/snapshot-followers` |
 
-Replace `easyflow-web` with whatever you actually named the web service, and
+Replace `easyflow` with whatever you actually named the web service, and
 set `CRON_SECRET` in the cron job's own environment to the same value as the
 web app's `CRON_SECRET`.
 

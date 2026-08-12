@@ -31,7 +31,7 @@ describe("campaign templates", () => {
 
   it("finds templates by slug and returns null for unknown slugs", () => {
     expect(getCampaignTemplate("dtc-product-link")?.title).toBe(
-      "DTC Product Link Drop"
+      "Link direto do produto"
     );
     expect(getCampaignTemplate("missing-template")).toBeNull();
     expect(getCampaignTemplate(undefined)).toBeNull();

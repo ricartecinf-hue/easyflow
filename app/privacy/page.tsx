@@ -2,73 +2,73 @@ import type { Metadata } from "next";
 import LegalShell from "@/components/legal-shell";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy - OpenReply",
+  title: "Política de Privacidade - EasyFlow",
   description:
-    "How OpenReply handles Instagram account data, webhook payloads, billing data, and customer campaign information.",
+    "Como o EasyFlow trata dados de contas do Instagram, webhooks e informações de campanhas.",
 };
 
 export default function PrivacyPage() {
   return (
     <LegalShell
-      title="Privacy Policy"
-      description="OpenReply helps businesses send Meta-compliant private replies when people comment on connected Instagram posts or reels."
-      updatedAt="May 24, 2026"
+      title="Política de Privacidade"
+      description="O EasyFlow ajuda empresas a enviar respostas privadas pela API oficial da Meta quando alguém comenta em publicações ou reels conectados."
+      updatedAt="24 de maio de 2026"
     >
       <section>
-        <h2 className="text-xl font-bold text-white">Data We Collect</h2>
+        <h2 className="text-xl font-bold text-white">Dados que coletamos</h2>
         <p className="mt-3">
-          We collect account email addresses for authentication, workspace and
-          billing metadata, connected Instagram account identifiers, encrypted
-          Instagram access tokens, campaign settings, webhook payloads,
-          comments needed to process campaigns, delivery logs, and operational
-          diagnostics.
+          Coletamos endereços de e-mail para autenticação, metadados do espaço
+          de trabalho e de cobrança, identificadores das contas conectadas do
+          Instagram, tokens de acesso criptografados, configurações de
+          campanhas, eventos de webhook, comentários necessários para executar
+          as campanhas, registros de entrega e diagnósticos operacionais.
         </p>
       </section>
 
       <section>
-        <h2 className="text-xl font-bold text-white">How We Use Data</h2>
+        <h2 className="text-xl font-bold text-white">Como usamos os dados</h2>
         <p className="mt-3">
-          We use this data to authenticate users, connect Instagram
-          integrations, match comment keywords, send private replies through the
-          official Meta APIs, prevent duplicate sends, troubleshoot failures,
-          and protect the service.
+          Usamos esses dados para autenticar usuários, conectar contas do
+          Instagram, identificar palavras-chave nos comentários, enviar
+          respostas privadas pelas APIs oficiais da Meta, evitar envios
+          duplicados, diagnosticar falhas e proteger o serviço.
         </p>
       </section>
 
       <section>
-        <h2 className="text-xl font-bold text-white">Instagram And Meta Data</h2>
+        <h2 className="text-xl font-bold text-white">Dados do Instagram e da Meta</h2>
         <p className="mt-3">
-          OpenReply does not ask for Instagram passwords, scrape Instagram, or
-          use browser automation. Instagram tokens are encrypted at rest and are
-          used only to perform actions authorized by the connected business
-          account.
+          O EasyFlow não solicita senhas, não extrai dados do Instagram e não
+          usa automação de navegador. Os tokens do Instagram são armazenados de
+          forma criptografada e usados somente para executar ações autorizadas
+          pela conta profissional conectada.
         </p>
       </section>
 
       <section>
-        <h2 className="text-xl font-bold text-white">Subprocessors</h2>
+        <h2 className="text-xl font-bold text-white">Fornecedores de serviços</h2>
         <p className="mt-3">
-          The production service may use hosting, database, Redis queue, email,
-          and observability providers such as Vercel, Railway, PostgreSQL,
-          Redis, and Resend. These providers process data only as needed to run
-          the service.
+          O serviço pode utilizar fornecedores de hospedagem, banco de dados,
+          filas Redis, e-mail e observabilidade. Esses fornecedores processam
+          dados somente na medida necessária para manter o EasyFlow em
+          funcionamento.
         </p>
       </section>
 
       <section>
-        <h2 className="text-xl font-bold text-white">Retention And Deletion</h2>
+        <h2 className="text-xl font-bold text-white">Retenção e exclusão</h2>
         <p className="mt-3">
-          Customers can disconnect Instagram from settings, which removes the
-          stored Instagram connection and stops campaigns. For account or data
-          deletion, follow the Data Deletion page linked from the footer.
+          O cliente pode desconectar o Instagram nas configurações. Isso remove
+          a conexão armazenada e interrompe as campanhas. Para excluir a conta
+          ou outros dados, siga as instruções da página de Exclusão de Dados.
         </p>
       </section>
 
       <section>
-        <h2 className="text-xl font-bold text-white">Contact</h2>
+        <h2 className="text-xl font-bold text-white">Contato</h2>
         <p className="mt-3">
-          For privacy questions, contact the repository owner through GitHub or
-          the support email configured for the hosted OpenReply service.
+          Para dúvidas sobre privacidade, entre em contato pelo canal de suporte
+          informado no serviço EasyFlow.
         </p>
       </section>
     </LegalShell>

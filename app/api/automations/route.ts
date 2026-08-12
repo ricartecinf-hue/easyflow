@@ -64,11 +64,11 @@ const createAutomationSchema = z
   // A campaign must target a specific post, any post, or the next reel.
   .refine(
     (d) => d.matchAnyPost || d.pendingNextReel || Boolean(d.postId),
-    { message: "Choose which post(s) trigger the campaign", path: ["postId"] }
+    { message: "Escolha quais publicações ativam a campanha", path: ["postId"] }
   )
   // And it must match either specific words or any word.
   .refine((d) => d.matchAnyWord || d.keywords.length >= 1, {
-    message: "Add at least one keyword, or match any word",
+    message: "Adicione uma palavra-chave ou selecione qualquer palavra",
     path: ["keywords"],
   })
   // An opening DM needs both a message and a button label.
@@ -77,7 +77,7 @@ const createAutomationSchema = z
       !d.openingDmEnabled ||
       (Boolean(d.openingDmMessage?.trim()) &&
         Boolean(d.openingDmButtonLabel?.trim())),
-    { message: "Opening DM needs a message and a button label", path: ["openingDmMessage"] }
+    { message: "A DM inicial precisa de mensagem e texto no botão", path: ["openingDmMessage"] }
   );
 
 const updateAutomationSchema = z.object({
@@ -329,14 +329,14 @@ export async function POST(request: NextRequest) {
 
   if (!workspace) {
     return NextResponse.json(
-      { success: false, error: "Workspace not found" },
+      { success: false, error: "Espaço de trabalho não encontrado" },
       { status: 404 }
     );
   }
 
   if (!instagramAccount) {
     return NextResponse.json(
-      { success: false, error: "Connect Instagram before creating campaigns" },
+      { success: false, error: "Conecte o Instagram antes de criar campanhas" },
       { status: 400 }
     );
   }
@@ -356,7 +356,7 @@ export async function POST(request: NextRequest) {
     linkCreates.push({
       workspaceId,
       slug: generateTrackedLinkSlug(),
-      label: "Primary campaign link",
+      label: "Link principal da campanha",
       destinationUrl: trackedDestinationUrl,
     });
   }
@@ -364,7 +364,7 @@ export async function POST(request: NextRequest) {
     linkCreates.push({
       workspaceId,
       slug: generateTrackedLinkSlug(),
-      label: secondaryButtonLabel?.trim() || "Open link",
+      label: secondaryButtonLabel?.trim() || "Abrir link",
       destinationUrl: secondaryDestinationUrl,
     });
   }
@@ -478,7 +478,7 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        error: "Invalid input",
+        error: "Dados inválidos",
         details: parsed.error.flatten(),
       },
       { status: 400 }
@@ -491,7 +491,7 @@ export async function PATCH(request: NextRequest) {
 
   if (!existing) {
     return NextResponse.json(
-      { success: false, error: "Campaign not found" },
+      { success: false, error: "Campanha não encontrada" },
       { status: 404 }
     );
   }
@@ -564,7 +564,7 @@ export async function PATCH(request: NextRequest) {
           workspaceId,
           automationId,
           slug: generateTrackedLinkSlug(),
-          label: "Primary campaign link",
+          label: "Link principal da campanha",
           destinationUrl: trackedDestinationUrl,
         },
       });
@@ -580,7 +580,7 @@ export async function PATCH(request: NextRequest) {
       orderBy: { createdAt: "asc" },
     });
     const secondaryLink = links[1];
-    const secondaryLabel = secondaryButtonLabel?.trim() || "Open link";
+    const secondaryLabel = secondaryButtonLabel?.trim() || "Abrir link";
 
     if (secondaryDestinationUrl === "") {
       if (secondaryLink) {
@@ -639,7 +639,7 @@ export async function DELETE(request: NextRequest) {
 
   if (!existing) {
     return NextResponse.json(
-      { success: false, error: "Campaign not found" },
+      { success: false, error: "Campanha não encontrada" },
       { status: 404 }
     );
   }

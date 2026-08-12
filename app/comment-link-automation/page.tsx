@@ -3,14 +3,14 @@ import SeoPageShell from "@/components/seo-page-shell";
 import { commentLinkSeoPage } from "@/lib/seo-pages";
 
 export const metadata: Metadata = {
-  title: "Comment LINK Automation for Instagram",
+  title: "Automação do comentário LINK no Instagram",
   description:
-    "Automate Instagram comment LINK replies with keyword matching, Meta-compliant private replies, tracked links, and campaign analytics.",
+    "Automatize respostas ao comentário LINK com palavras-chave, respostas privadas oficiais, links rastreados e análises.",
   alternates: { canonical: "/comment-link-automation" },
   openGraph: {
-    title: "Comment LINK Automation for Instagram",
+    title: "Automação do comentário LINK no Instagram",
     description:
-      "Turn LINK, SHOP, GUIDE, and PRICE comments into tracked private replies with OpenReply.",
+      "Transforme comentários como LINK, COMPRAR, GUIA e PREÇO em respostas privadas rastreadas.",
     url: "/comment-link-automation",
   },
 };
@@ -18,4 +18,3 @@ export const metadata: Metadata = {
 export default function CommentLinkAutomationPage() {
   return <SeoPageShell config={commentLinkSeoPage} />;
 }
-

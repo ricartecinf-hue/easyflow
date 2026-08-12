@@ -18,20 +18,20 @@ export default function LegalShell({
       <header className="border-b border-white/10">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-5">
           <Link href="/" className="flex items-center gap-3">
-            <span className="text-lg font-bold text-white">OpenReply</span>
+            <span className="text-lg font-bold text-white">EasyFlow</span>
           </Link>
           <Link
             href="/login"
             className="text-sm font-semibold text-zinc-300 transition hover:text-white"
           >
-            Sign in
+            Entrar
           </Link>
         </div>
       </header>
 
       <article className="mx-auto max-w-3xl px-5 py-14">
         <p className="text-sm font-semibold uppercase text-cyan-200">
-          Last updated {updatedAt}
+          Atualizado em {updatedAt}
         </p>
         <h1 className="mt-4 text-4xl font-black text-white sm:text-5xl">
           {title}

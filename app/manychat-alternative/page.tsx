@@ -3,14 +3,14 @@ import SeoPageShell from "@/components/seo-page-shell";
 import { manychatAlternativePage } from "@/lib/seo-pages";
 
 export const metadata: Metadata = {
-  title: "Manychat Alternative for Instagram Comment-to-DM Campaigns",
+  title: "Alternativa ao Manychat para comentários e DMs no Instagram",
   description:
-    "A focused Manychat alternative for Instagram keyword comments, private replies, tracked links, analytics, and agency client reports.",
+    "Alternativa objetiva ao Manychat com palavras-chave, respostas privadas, links rastreados e relatórios.",
   alternates: { canonical: "/manychat-alternative" },
   openGraph: {
-    title: "Manychat Alternative for Instagram Comment-to-DM Campaigns",
+    title: "Alternativa ao Manychat para comentários e DMs no Instagram",
     description:
-      "Use OpenReply for focused Instagram comment-to-DM campaigns without a broad chatbot flow builder.",
+      "Use o EasyFlow para campanhas de comentários para DM sem criar fluxos complexos de chatbot.",
     url: "/manychat-alternative",
   },
 };
@@ -18,4 +18,3 @@ export const metadata: Metadata = {
 export default function ManychatAlternativePage() {
   return <SeoPageShell config={manychatAlternativePage} />;
 }
-
