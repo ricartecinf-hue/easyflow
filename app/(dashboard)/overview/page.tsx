@@ -25,30 +25,30 @@ function formatDate(iso: string): string {
   return d.toLocaleDateString("pt-BR", { month: "short", day: "numeric" });
 }
 
-const COUNT_OPTIONS = [
-  { value: "25", label: "Últimos 25" },
-  { value: "50", label: "Últimos 50" },
-  { value: "100", label: "Últimos 100" },
-  { value: "all", label: "Todo o período" },
-];
+const INITIAL_POST_COUNT = 2;
+const LOAD_MORE_COUNT = 10;
 
 export default function OverviewPage() {
   const [data, setData] = useState<OverviewResponse | null>(null);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedAccountId, setSelectedAccountId] = useState("all");
-  const [count, setCount] = useState("50");
+  const [count, setCount] = useState(INITIAL_POST_COUNT);
 
   useEffect(() => {
     const params = new URLSearchParams();
     if (selectedAccountId !== "all") {
       params.set("instagramAccountId", selectedAccountId);
     }
-    params.set("count", count);
+    params.set("count", String(count));
+
+    let cancelled = false;
 
     fetch(`/api/instagram/overview?${params}`)
       .then((r) => r.json())
       .then((res) => {
+        if (cancelled) return;
         if (res.success) {
           setData(res.data);
           setError(null);
@@ -56,18 +56,30 @@ export default function OverviewPage() {
           setError(res.error ?? "Não foi possível carregar a visão geral");
         }
       })
-      .catch(() => setError("Não foi possível carregar a visão geral"))
-      .finally(() => setLoading(false));
+      .catch(() => {
+        if (!cancelled) setError("Não foi possível carregar a visão geral");
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setLoading(false);
+          setLoadingMore(false);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, [selectedAccountId, count]);
 
   function handleAccountChange(accountId: string) {
     setLoading(true);
+    setCount(INITIAL_POST_COUNT);
     setSelectedAccountId(accountId);
   }
 
-  function handleCountChange(next: string) {
-    setLoading(true);
-    setCount(next);
+  function handleLoadMore() {
+    setLoadingMore(true);
+    setCount((current) => current + LOAD_MORE_COUNT);
   }
 
   if (loading) {
@@ -109,29 +121,11 @@ export default function OverviewPage() {
         <div className="min-w-0">
           <h1 className="text-lg font-semibold text-foreground">Visão geral</h1>
           <p className="text-sm text-muted mt-1">
-            {data.requestedCount === "all" ? "Todo o período" : "Recentes"} —{" "}
-            {totals.posts} {totals.posts === 1 ? "publicação" : "publicações"} de @
+            {totals.posts} {totals.posts === 1 ? "publicação recente" : "publicações recentes"} de @
             {data.account.username}
-            {data.truncated ? ` (limitado a ${totals.posts})` : ""}
           </p>
         </div>
         <div className="flex flex-wrap items-end gap-x-4 gap-y-3">
-          <label className="flex flex-col gap-2 text-sm">
-            <span className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
-              Período
-            </span>
-            <select
-              value={count}
-              onChange={(e) => handleCountChange(e.target.value)}
-              className="border-0 bg-transparent py-2 pr-1 text-sm text-foreground outline-none"
-            >
-              {COUNT_OPTIONS.map((o) => (
-                <option key={o.value} value={o.value}>
-                  {o.label}
-                </option>
-              ))}
-            </select>
-          </label>
           {accounts.length > 1 && (
             <AccountSelect
               accounts={accounts.map((a) => ({
@@ -242,6 +236,18 @@ export default function OverviewPage() {
                 ))}
               </tbody>
             </table>
+            {data.hasMore && (
+              <div className="flex justify-center border-t border-border pt-4">
+                <button
+                  type="button"
+                  onClick={handleLoadMore}
+                  disabled={loadingMore}
+                  className="rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground hover:border-accent hover:text-accent disabled:cursor-wait disabled:opacity-60"
+                >
+                  {loadingMore ? "Carregando…" : `Carregar mais ${LOAD_MORE_COUNT}`}
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>

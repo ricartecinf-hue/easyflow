@@ -16,6 +16,7 @@ export const maxDuration = 60;
 // Safety ceiling for "all time": bounds pagination and the number of
 // per-media insight requests so we can't hammer the API or time out.
 const MAX_POSTS = 500;
+const DEFAULT_POSTS = 2;
 
 // How many insight requests to run at once.
 const INSIGHTS_CONCURRENCY = 8;
@@ -64,6 +65,7 @@ export interface OverviewResponse {
   accounts: Array<{ id: string; username: string }>;
   requestedCount: "all" | number;
   truncated: boolean;
+  hasMore: boolean;
   insightsAvailable: boolean;
   totals: {
     posts: number;
@@ -120,14 +122,21 @@ export async function GET(request: NextRequest) {
       ? "all"
       : Number.isFinite(parsedCount)
         ? Math.max(parsedCount, 1)
-        : 50;
+        : DEFAULT_POSTS;
 
     const target = isAll
       ? MAX_POSTS
       : Math.min(requestedCount as number, MAX_POSTS);
 
-    const media = await getAllUserMedia(accessToken, target);
-    const truncated = media.length >= MAX_POSTS;
+    // Fetch one extra item only to determine whether the UI should offer
+    // "Carregar mais". Insights are requested only for the visible posts.
+    const fetchedMedia = await getAllUserMedia(
+      accessToken,
+      Math.min(target + 1, MAX_POSTS)
+    );
+    const hasMore = target < MAX_POSTS && fetchedMedia.length > target;
+    const media = fetchedMedia.slice(0, target);
+    const truncated = target >= MAX_POSTS && fetchedMedia.length >= MAX_POSTS;
 
     // Likes and comments come free with basic media fields. Views / reach /
     // saved / shares require the insights permission, so fetch them per media
@@ -209,6 +218,7 @@ export async function GET(request: NextRequest) {
       accounts,
       requestedCount,
       truncated,
+      hasMore,
       insightsAvailable: insightsAvailable && !permissionDenied,
       totals,
       posts,
