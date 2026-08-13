@@ -37,6 +37,8 @@ interface CampaignPreviewProps {
   requireFollow: boolean;
   followPromptMessage: string;
   followPromptButtonLabel: string;
+  followRejectionMessage: string;
+  followRetryButtonLabel: string;
   followUpEnabled: boolean;
   followUpMessage: string;
   followUpDelayMinutes?: number;
@@ -317,6 +319,8 @@ function DmScreen({
   requireFollow,
   followPromptMessage,
   followPromptButtonLabel,
+  followRejectionMessage,
+  followRetryButtonLabel,
   followUpEnabled,
   followUpMessage,
   followUpDelayMinutes = 0,
@@ -337,6 +341,8 @@ function DmScreen({
   requireFollow: boolean;
   followPromptMessage: string;
   followPromptButtonLabel: string;
+  followRejectionMessage: string;
+  followRetryButtonLabel: string;
   followUpEnabled: boolean;
   followUpMessage: string;
   followUpDelayMinutes?: number;
@@ -399,6 +405,18 @@ function DmScreen({
             <div className="flex justify-end">
               <div className="rounded-2xl rounded-br-md bg-accent px-3 py-2 text-sm">
                 {followPromptButtonLabel || "Já estou seguindo"}
+              </div>
+            </div>
+            <div className="flex items-end gap-2">
+              <Avatar url={avatarUrl} size={24} />
+              <div className="max-w-[80%] overflow-hidden rounded-2xl rounded-bl-md bg-zinc-800">
+                <p className="whitespace-pre-wrap px-3 py-2 text-sm">
+                  {followRejectionMessage ||
+                    "Ainda não consegui confirmar que você segue o perfil. Siga agora e tente novamente."}
+                </p>
+                <div className="mx-1.5 mb-1.5 rounded-xl bg-zinc-700 px-4 py-1.5 text-center text-sm font-medium text-white">
+                  {followRetryButtonLabel || "Agora estou seguindo"}
+                </div>
               </div>
             </div>
           </>
@@ -523,6 +541,8 @@ export default function CampaignPreview(props: CampaignPreviewProps) {
             requireFollow={props.requireFollow}
             followPromptMessage={props.followPromptMessage}
             followPromptButtonLabel={props.followPromptButtonLabel}
+            followRejectionMessage={props.followRejectionMessage}
+            followRetryButtonLabel={props.followRetryButtonLabel}
             followUpEnabled={props.followUpEnabled}
             followUpMessage={props.followUpMessage}
             followUpDelayMinutes={props.followUpDelayMinutes}
@@ -545,6 +565,8 @@ export default function CampaignPreview(props: CampaignPreviewProps) {
             requireFollow={props.requireFollow}
             followPromptMessage={props.followPromptMessage}
             followPromptButtonLabel={props.followPromptButtonLabel}
+            followRejectionMessage={props.followRejectionMessage}
+            followRetryButtonLabel={props.followRetryButtonLabel}
             followUpEnabled={props.followUpEnabled}
             followUpMessage={props.followUpMessage}
             followUpDelayMinutes={props.followUpDelayMinutes}

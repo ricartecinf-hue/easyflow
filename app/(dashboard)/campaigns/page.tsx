@@ -32,6 +32,8 @@ interface Campaign {
   requireFollow: boolean;
   followPromptMessage: string | null;
   followPromptButtonLabel: string | null;
+  followRejectionMessage: string | null;
+  followRetryButtonLabel: string | null;
   isActive: boolean;
   wholeWordMatch: boolean;
   instagramAccountId: string;
@@ -263,8 +265,15 @@ export default function CampaignsPage() {
           secondaryDestinationUrl: auto.trackedLinks[1]?.destinationUrl ?? "",
           secondaryButtonLabel: auto.trackedLinks[1]?.label ?? "Abrir link",
           requireFollow: auto.requireFollow,
-          followPromptMessage: auto.followPromptMessage,
-          followPromptButtonLabel: auto.followPromptButtonLabel,
+          followPromptMessage:
+            auto.followPromptMessage ||
+            "Você já segue o meu perfil? Se já segue, toque no botão abaixo.",
+          followPromptButtonLabel: auto.followPromptButtonLabel || "Sim, eu sigo",
+          followRejectionMessage:
+            auto.followRejectionMessage ||
+            "Ainda não consegui confirmar que você segue o perfil. Siga agora e tente novamente.",
+          followRetryButtonLabel:
+            auto.followRetryButtonLabel || "Agora estou seguindo",
           wholeWordMatch: auto.wholeWordMatch,
           isActive: false,
         }),

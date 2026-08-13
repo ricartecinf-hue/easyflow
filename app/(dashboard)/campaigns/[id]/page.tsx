@@ -31,6 +31,8 @@ interface Campaign {
   requireFollow: boolean;
   followPromptMessage: string | null;
   followPromptButtonLabel: string | null;
+  followRejectionMessage: string | null;
+  followRetryButtonLabel: string | null;
   followUpEnabled: boolean;
   followUpMessage: string | null;
   followUpDelayMinutes: number | null;
@@ -244,6 +246,14 @@ export default function CampaignDetailPage() {
             <FieldBox>
               {campaign.followPromptButtonLabel || "Já estou seguindo"}
             </FieldBox>
+            <p className="pt-2 text-xs text-muted">Se ainda não estiver seguindo</p>
+            <FieldBox>
+              {campaign.followRejectionMessage ||
+                "Ainda não consegui confirmar que você segue o perfil. Siga agora e tente novamente."}
+            </FieldBox>
+            <FieldBox>
+              {campaign.followRetryButtonLabel || "Agora estou seguindo"}
+            </FieldBox>
           </Summary>
         )}
 
@@ -367,6 +377,10 @@ export default function CampaignDetailPage() {
             followPromptMessage={campaign.followPromptMessage ?? ""}
             followPromptButtonLabel={
               campaign.followPromptButtonLabel ?? "Já estou seguindo"
+            }
+            followRejectionMessage={campaign.followRejectionMessage ?? ""}
+            followRetryButtonLabel={
+              campaign.followRetryButtonLabel ?? "Agora estou seguindo"
             }
             followUpEnabled={campaign.followUpEnabled ?? false}
             followUpMessage={campaign.followUpMessage ?? ""}

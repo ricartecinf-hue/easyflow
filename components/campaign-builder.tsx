@@ -45,6 +45,8 @@ interface LoadedCampaign {
   requireFollow: boolean;
   followPromptMessage: string | null;
   followPromptButtonLabel: string | null;
+  followRejectionMessage: string | null;
+  followRetryButtonLabel: string | null;
   followUpEnabled: boolean;
   followUpMessage: string | null;
   followUpDelayMinutes: number | null;
@@ -174,9 +176,17 @@ export default function CampaignBuilder({ mode, campaignId }: CampaignBuilderPro
   const [secondaryDestinationUrl, setSecondaryDestinationUrl] = useState("");
   const [secondaryButtonLabel, setSecondaryButtonLabel] = useState("Abrir link");
   const [requireFollow, setRequireFollow] = useState(false);
-  const [followPromptMessage, setFollowPromptMessage] = useState("");
+  const [followPromptMessage, setFollowPromptMessage] = useState(
+    "Você já segue o meu perfil? Se já segue, toque no botão abaixo."
+  );
   const [followPromptButtonLabel, setFollowPromptButtonLabel] =
-    useState("i'm following");
+    useState("Sim, eu sigo");
+  const [followRejectionMessage, setFollowRejectionMessage] = useState(
+    "Ainda não consegui confirmar que você segue o perfil. Siga agora e tente novamente."
+  );
+  const [followRetryButtonLabel, setFollowRetryButtonLabel] = useState(
+    "Agora estou seguindo"
+  );
   const [followUpEnabled, setFollowUpEnabled] = useState(false);
   const [followUpMessage, setFollowUpMessage] = useState("");
   const [followUpDelayMinutes, setFollowUpDelayMinutes] = useState(0);
@@ -281,9 +291,19 @@ export default function CampaignBuilder({ mode, campaignId }: CampaignBuilderPro
         setSecondaryButtonLabel(secondLink?.label ?? "Abrir link");
         setSecondLinkOpen(Boolean(secondLink?.destinationUrl));
         setRequireFollow(c.requireFollow ?? false);
-        setFollowPromptMessage(c.followPromptMessage ?? "");
+        setFollowPromptMessage(
+          c.followPromptMessage ??
+            "Você já segue o meu perfil? Se já segue, toque no botão abaixo."
+        );
         setFollowPromptButtonLabel(
-          c.followPromptButtonLabel ?? "i'm following"
+          c.followPromptButtonLabel ?? "Sim, eu sigo"
+        );
+        setFollowRejectionMessage(
+          c.followRejectionMessage ??
+            "Ainda não consegui confirmar que você segue o perfil. Siga agora e tente novamente."
+        );
+        setFollowRetryButtonLabel(
+          c.followRetryButtonLabel ?? "Agora estou seguindo"
         );
         setFollowUpEnabled(c.followUpEnabled ?? false);
         setFollowUpMessage(c.followUpMessage ?? "");
@@ -394,6 +414,14 @@ export default function CampaignBuilder({ mode, campaignId }: CampaignBuilderPro
     if (!dmMessage.trim()) return setError("Adicione a DM com o link.");
     if (openingDmEnabled && (!openingDmMessage.trim() || !openingDmButtonLabel.trim()))
       return setError("A DM inicial precisa de uma mensagem e do texto do botão.");
+    if (
+      requireFollow &&
+      (!followPromptMessage.trim() ||
+        !followPromptButtonLabel.trim() ||
+        !followRejectionMessage.trim() ||
+        !followRetryButtonLabel.trim())
+    )
+      return setError("Preencha todas as mensagens e botões da confirmação de seguidor.");
 
     setSaving(true);
 
@@ -422,7 +450,13 @@ export default function CampaignBuilder({ mode, campaignId }: CampaignBuilderPro
       requireFollow,
       followPromptMessage: requireFollow ? followPromptMessage.trim() : "",
       followPromptButtonLabel: requireFollow
-        ? followPromptButtonLabel.trim() || "i'm following"
+        ? followPromptButtonLabel.trim() || "Sim, eu sigo"
+        : "",
+      followRejectionMessage: requireFollow
+        ? followRejectionMessage.trim()
+        : "",
+      followRetryButtonLabel: requireFollow
+        ? followRetryButtonLabel.trim() || "Agora estou seguindo"
         : "",
       followUpEnabled,
       followUpMessage: followUpEnabled ? followUpMessage.trim() : "",
@@ -795,10 +829,10 @@ export default function CampaignBuilder({ mode, campaignId }: CampaignBuilderPro
           )}
         </Section>
 
-        <Section title="A pessoa receberá">
+        <Section title="Fluxo de entrega">
           <div className="rounded-lg border border-border p-3">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-foreground">uma DM inicial</span>
+              <span className="text-sm text-foreground">1. Mensagem inicial com botão</span>
               <Toggle
                 on={openingDmEnabled}
                 onToggle={() => setOpeningDmEnabled(!openingDmEnabled)}
@@ -836,6 +870,10 @@ export default function CampaignBuilder({ mode, campaignId }: CampaignBuilderPro
             </div>
             {requireFollow && (
               <div className="mt-3 space-y-2">
+                <p className="text-xs font-semibold uppercase tracking-wide text-muted">
+                  2. Confirmação de seguidor
+                </p>
+                <label className="block text-xs text-muted">Mensagem da pergunta</label>
                 <textarea
                   value={followPromptMessage}
                   onChange={(e) => setFollowPromptMessage(e.target.value)}
@@ -844,6 +882,7 @@ export default function CampaignBuilder({ mode, campaignId }: CampaignBuilderPro
                   className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground placeholder:text-zinc-500 focus:border-accent/40 focus:outline-none resize-none"
                   maxLength={1000}
                 />
+                <label className="block text-xs text-muted">Texto do botão</label>
                 <input
                   value={followPromptButtonLabel}
                   onChange={(e) => setFollowPromptButtonLabel(e.target.value)}
@@ -851,16 +890,38 @@ export default function CampaignBuilder({ mode, campaignId }: CampaignBuilderPro
                   className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground placeholder:text-zinc-500 focus:border-accent/40 focus:outline-none"
                   maxLength={20}
                 />
+                <div className="my-3 border-t border-border" />
+                <p className="text-xs font-semibold uppercase tracking-wide text-muted">
+                  3. Se ainda não estiver seguindo
+                </p>
+                <label className="block text-xs text-muted">Mensagem de reprovação</label>
+                <textarea
+                  value={followRejectionMessage}
+                  onChange={(e) => setFollowRejectionMessage(e.target.value)}
+                  placeholder="Ainda não consegui confirmar que você segue o perfil. Siga agora e tente novamente."
+                  rows={3}
+                  className="w-full resize-none rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground placeholder:text-zinc-500 focus:border-accent/40 focus:outline-none"
+                  maxLength={1000}
+                />
+                <label className="block text-xs text-muted">Botão para verificar novamente</label>
+                <input
+                  value={followRetryButtonLabel}
+                  onChange={(e) => setFollowRetryButtonLabel(e.target.value)}
+                  placeholder="Agora estou seguindo"
+                  className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground placeholder:text-zinc-500 focus:border-accent/40 focus:outline-none"
+                  maxLength={20}
+                />
                 <p className="text-xs text-muted">
                   O link é enviado depois que a pessoa toca no botão e o Instagram
-                  confirma que ela segue o perfil. Se não for possível verificar, o link será enviado mesmo assim.
+                  confirma que ela segue o perfil. Enquanto a confirmação não acontecer,
+                  o sistema mostra a etapa 3 e não libera o material.
                 </p>
               </div>
             )}
           </div>
         </Section>
 
-        <Section title="Depois, ela receberá">
+        <Section title={requireFollow ? "4. Material liberado" : "Mensagem com o material"}>
           <div className="rounded-lg border border-border p-3 space-y-2">
             <span className="text-sm text-foreground">uma DM com o link</span>
             <textarea
@@ -1006,6 +1067,8 @@ export default function CampaignBuilder({ mode, campaignId }: CampaignBuilderPro
             requireFollow={requireFollow}
             followPromptMessage={followPromptMessage}
             followPromptButtonLabel={followPromptButtonLabel || "Já estou seguindo"}
+            followRejectionMessage={followRejectionMessage}
+            followRetryButtonLabel={followRetryButtonLabel || "Agora estou seguindo"}
             followUpEnabled={followUpEnabled}
             followUpMessage={followUpMessage}
             followUpDelayMinutes={followUpDelayMinutes}

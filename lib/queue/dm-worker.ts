@@ -531,8 +531,8 @@ async function processComment(job: Job<ProcessCommentJob>): Promise<void> {
       Boolean(automation.openingDmButtonLabel);
 
     // Follow-gating: the link is revealed only after a follow. When an opening
-    // DM is enabled it comes FIRST, and its button routes into the follow check
-    // (opening DM → follow gate → link). Without an opening DM, we check follow
+    // DM is enabled it comes FIRST, and its button opens the follow question
+    // (opening DM → question → verification → link). Without an opening DM, we check follow
     // status at comment time: confirmed followers get the link now, everyone
     // else gets the "follow me first" prompt (re-verified on tap).
     let sendFollowPrompt = false;
@@ -555,14 +555,14 @@ async function processComment(job: Job<ProcessCommentJob>): Promise<void> {
           openingText,
           automation.openingDmButtonLabel as string,
           automation.requireFollow
-            ? `followcheck:${automation.id}`
+            ? `followprompt:${automation.id}`
             : `reveal:${automation.id}`
         );
       } else if (sendFollowPrompt) {
         const promptText = renderMessageWithoutLink({
           message:
             automation.followPromptMessage ||
-            "quick favor before i send your link. i don't make any money from this, it's free. if you want to support me, just don't unfollow after, and star the repo on github if it helps you. tap the button once you're following and i'll send it over",
+            "Você já segue o meu perfil? Se já segue, toque no botão abaixo.",
           commenterName,
         });
         await sendPrivateReplyWithButton(
@@ -570,7 +570,7 @@ async function processComment(job: Job<ProcessCommentJob>): Promise<void> {
           automation.instagramAccount.instagramId,
           commentId,
           promptText,
-          automation.followPromptButtonLabel || "i'm following",
+          automation.followPromptButtonLabel || "Sim, eu sigo",
           `followcheck:${automation.id}`
         );
       } else if (automation.trackedLinks.length > 0) {
@@ -675,17 +675,22 @@ async function processComment(job: Job<ProcessCommentJob>): Promise<void> {
 }
 
 /**
- * Deliver the reveal message after a user taps an opening DM's button.
- * The postback payload is `reveal:<automationId>`; the sender is the user's
- * IGSID (same id as their comment author id), which we DM directly.
+ * Advance a button-driven campaign. `followprompt:` opens the confirmation
+ * question, `followcheck:` verifies the follow and `reveal:` delivers the
+ * material when no follow gate is enabled.
  */
 async function processPostback(job: Job<ProcessPostbackJob>): Promise<void> {
   const { instagramAccountId, userId, payload, fallback } = job.data;
 
+  const isFollowPrompt = payload.startsWith("followprompt:");
   const isFollowCheck = payload.startsWith("followcheck:");
-  if (!isFollowCheck && !payload.startsWith("reveal:")) return;
+  if (!isFollowPrompt && !isFollowCheck && !payload.startsWith("reveal:")) return;
   const automationId = payload.slice(
-    isFollowCheck ? "followcheck:".length : "reveal:".length
+    isFollowPrompt
+      ? "followprompt:".length
+      : isFollowCheck
+        ? "followcheck:".length
+        : "reveal:".length
   );
 
   const automation = await prisma.automation.findFirst({
@@ -738,20 +743,40 @@ async function processPostback(job: Job<ProcessPostbackJob>): Promise<void> {
     return;
   }
 
+  // The first button only advances the conversation to the explicit follow
+  // question. Verification happens after the user taps "Sim, eu sigo".
+  if (isFollowPrompt && automation.requireFollow) {
+    const promptText = renderMessageWithoutLink({
+      message:
+        automation.followPromptMessage ||
+        "Você já segue o meu perfil? Se já segue, toque no botão abaixo.",
+      commenterName,
+    });
+    await sendDirectMessageWithButton(
+      accessToken,
+      automation.instagramAccount.instagramId,
+      userId,
+      promptText,
+      automation.followPromptButtonLabel || "Sim, eu sigo",
+      `followcheck:${automation.id}`
+    );
+    return;
+  }
+
   // Follow-gate: before revealing the link, verify the user follows. On a
-  // `followcheck:` tap a non-follower gets the prompt again (no quota spent);
+  // `followcheck:` tap a non-follower gets the rejection/retry step;
   // on a read fallback a non-follower is silently skipped — the gate must not
-  // be bypassable by just reading the DM and waiting. Following, or
-  // unverifiable (null), falls through and delivers the link — fail-open so a
-  // real follower is never trapped.
+  // be bypassable by just reading the DM and waiting. An unverifiable status is
+  // treated like a rejection, so the material is never delivered without a
+  // positive confirmation from Instagram.
   if ((isFollowCheck || fallback) && automation.requireFollow) {
     const follows = await getUserFollowStatus(accessToken, userId);
-    if (follows === false) {
+    if (follows !== true) {
       if (fallback) return;
-      const promptText = renderMessageWithoutLink({
+      const rejectionText = renderMessageWithoutLink({
         message:
-          automation.followPromptMessage ||
-          "quick favor before i send your link. i don't make any money from this, it's free. if you want to support me, just don't unfollow after, and star the repo on github if it helps you. tap the button once you're following and i'll send it over",
+          automation.followRejectionMessage ||
+          "Ainda não consegui confirmar que você segue o perfil. Siga agora e tente novamente.",
         commenterName,
       });
       try {
@@ -759,8 +784,8 @@ async function processPostback(job: Job<ProcessPostbackJob>): Promise<void> {
           accessToken,
           automation.instagramAccount.instagramId,
           userId,
-          promptText,
-          automation.followPromptButtonLabel || "i'm following",
+          rejectionText,
+          automation.followRetryButtonLabel || "Agora estou seguindo",
           `followcheck:${automation.id}`
         );
       } catch (error) {
@@ -1090,7 +1115,7 @@ async function processMessage(job: Job<ProcessMessageJob>): Promise<void> {
         const promptText = renderMessageWithoutLink({
           message:
             automation.followPromptMessage ||
-            "Almost there! Follow me and tap the button below to grab your link 💛",
+            "Você já segue o meu perfil? Se já segue, toque no botão abaixo.",
           commenterName,
         });
         await sendDirectMessageWithButton(
@@ -1098,7 +1123,7 @@ async function processMessage(job: Job<ProcessMessageJob>): Promise<void> {
           automation.instagramAccount.instagramId,
           senderId,
           promptText,
-          automation.followPromptButtonLabel || "I'm following ✅",
+          automation.followPromptButtonLabel || "Sim, eu sigo",
           `followcheck:${automation.id}`
         );
       } else {

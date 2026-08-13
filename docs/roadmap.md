@@ -4,6 +4,13 @@
 > da migração do banco e da configuração das variáveis do administrador/Asaas
 > descritas em `docs/easypanel.md`.
 
+## Desativação do projeto antigo
+
+- [x] Pasta local do Sloth removida do Mac em 13/08/2026.
+- [ ] Confirmar e remover o antigo serviço Sloth do Easypanel.
+- [ ] Confirmar e remover o antigo repositório Sloth do GitHub.
+- [ ] Confirmar que não restam URLs do Sloth configuradas no app da Meta.
+
 ## Próximo módulo: administração de usuários e cobrança pelo Asaas
 
 Objetivo: permitir que o administrador acompanhe o uso do EasyFlow, libere ou
